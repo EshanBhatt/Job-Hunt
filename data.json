@@ -1,5 +1,27 @@
 [
   {
+    "id": "mpw4zwbynv6",
+    "company": "EA",
+    "role": "Content Designer",
+    "location": "Orlando, FL",
+    "date": "2026-06-01",
+    "category": "Graphics Designer",
+    "response": "PENDING",
+    "respTime": null,
+    "notes": ""
+  },
+  {
+    "id": "mpw3cmzrhpp",
+    "company": "Crossing Hurdles",
+    "role": "Pixel Artist",
+    "location": "Remote",
+    "date": "2026-06-01",
+    "category": "Illustrator / Concept Art / Game Artist",
+    "response": "PENDING",
+    "respTime": null,
+    "notes": ""
+  },
+  {
     "id": "613baf85",
     "company": "True North Social",
     "role": "Graphic Designer",
@@ -182,7 +204,7 @@
     "location": "Remote",
     "date": "2024-04-07",
     "category": "Graphics Designer",
-    "response": "PENDING",
+    "response": "GHOSTED",
     "respTime": null,
     "notes": ""
   },
@@ -193,7 +215,7 @@
     "location": "Remote",
     "date": "2024-04-07",
     "category": "Illustrator / Concept Art / Game Artist",
-    "response": "PENDING",
+    "response": "GHOSTED",
     "respTime": null,
     "notes": ""
   },
@@ -204,7 +226,7 @@
     "location": "Los Angeles, CA",
     "date": "2024-04-07",
     "category": "Graphics Designer",
-    "response": "PENDING",
+    "response": "GHOSTED",
     "respTime": null,
     "notes": ""
   },
@@ -226,7 +248,7 @@
     "location": "Remote",
     "date": "2024-04-03",
     "category": "Illustrator / Concept Art / Game Artist",
-    "response": "PENDING",
+    "response": "GHOSTED",
     "respTime": null,
     "notes": ""
   },
@@ -237,7 +259,7 @@
     "location": "Remote",
     "date": "2024-04-02",
     "category": "Illustrator / Concept Art / Game Artist",
-    "response": "PENDING",
+    "response": "GHOSTED",
     "respTime": null,
     "notes": ""
   },
