@@ -160,8 +160,8 @@ tr:hover td{background:var(--bg2)}
 <div class="section active" id="tab-dashboard">
   <div class="hero">
     <div class="hero-eyebrow">Job Hunt Tracker</div>
-    <div class="hero-title" id="hero-title">GRINDING.</div>
-    <div class="hero-sub" id="hero-sub">Loading data...</div>
+    <div class="hero-title" id="hero-title">JOB HUNT.</div>
+    <div class="hero-sub" id="hero-sub">Connecting to GitHub...</div>
   </div>
 
   <div class="stat-grid" id="stat-grid"></div>
@@ -786,7 +786,7 @@ function formatDate(d) {
 // Set today's date as default
 document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
 
-load();
+document.addEventListener('DOMContentLoaded', load);
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
