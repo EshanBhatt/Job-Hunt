@@ -375,25 +375,40 @@ async function load() {
     showTokenPrompt();
     return;
   }
-  setStatus('Loading from GitHub...');
+
+  // 1. Render immediately from localStorage cache if available
+  const cached = localStorage.getItem('jobhunt_cache');
+  if (cached) {
+    try {
+      jobs = JSON.parse(cached);
+      dataLoaded = true;
+      renderDashboard();
+      renderApps();
+      renderStats();
+      showTab(activeTab);
+    } catch(e) {}
+  }
+
+  // 2. Sync from GitHub in background
+  setStatus('Syncing...');
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_FILE}`, {
       headers: { 'Authorization': `token ${token}` }
     });
     if (r.status === 404) {
-      // First time — seed with existing data
       jobs = SEED_DATA;
       await save();
     } else if (r.ok) {
       const d = await r.json();
       dataFileSha = d.sha;
       jobs = JSON.parse(atob(d.content.replace(/\n/g,'')));
+      localStorage.setItem('jobhunt_cache', JSON.stringify(jobs));
     } else {
       throw new Error('GitHub API error: ' + r.status);
     }
   } catch(e) {
-    setStatus('Error: ' + e.message);
-    jobs = SEED_DATA;
+    setStatus('Offline - using cache');
+    if (!cached) jobs = SEED_DATA;
   }
   dataLoaded = true;
   setStatus('');
@@ -420,6 +435,7 @@ async function save() {
     if (!r.ok) throw new Error('Save failed: ' + r.status);
     const d = await r.json();
     dataFileSha = d.content.sha;
+    localStorage.setItem('jobhunt_cache', JSON.stringify(jobs));
     setStatus('Saved ✓');
     setTimeout(() => setStatus(''), 2000);
   } catch(e) {
