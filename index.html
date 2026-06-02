@@ -239,6 +239,21 @@ tr:hover td{background:var(--bg2)}
   </div>
 
   <div class="sec-head" style="margin-top:1rem">
+    <span class="sec-title">GitHub Backup</span>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:2rem">
+    <div class="form-group" style="margin-bottom:10px">
+      <label>Personal Access Token (stored in this browser only)</label>
+      <input type="password" id="gh-token-input" placeholder="ghp_..." style="font-family:'DM Mono',monospace">
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn" onclick="saveGHToken()">Save Token</button>
+      <span id="gh-token-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)"></span>
+    </div>
+    <p style="font-size:11px;color:var(--dim);margin-top:.75rem;font-family:'DM Mono',monospace;line-height:1.6">Token is saved locally and used to backup data.json to GitHub after every change. If you ever lose your localStorage, you can restore from the repo.</p>
+  </div>
+
+  <div class="sec-head" style="margin-top:1rem">
     <span class="sec-title">Import from CSV/Paste</span>
   </div>
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:2rem">
@@ -379,10 +394,61 @@ function load() {
 }
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
+  syncToGitHub();
+}
+
+// GitHub backup — silent background sync, never blocks the UI
+const GH_REPO = 'EshanBhatt/Job-Hunt';
+const GH_FILE = 'data.json';
+let ghFileSha = null;
+
+function getGHToken() {
+  return localStorage.getItem('gh_pat') || '';
+}
+
+async function syncToGitHub() {
+  const token = getGHToken();
+  if (!token) return; // No token stored, skip silently
+  try {
+    if (!ghFileSha) {
+      const r = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+        headers: { 'Authorization': `token ${token}` }
+      });
+      if (r.ok) { const d = await r.json(); ghFileSha = d.sha; }
+    }
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(jobs, null, 2))));
+    const body = { message: 'Auto-backup job data', content };
+    if (ghFileSha) body.sha = ghFileSha;
+    const r2 = await fetch(`https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (r2.ok) { const d2 = await r2.json(); ghFileSha = d2.content.sha; }
+  } catch(e) {
+    // Silently fail — localStorage is the source of truth
+  }
 }
 function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2,5);
 }
+
+function saveGHToken() {
+  const t = document.getElementById('gh-token-input').value.trim();
+  if (!t) { document.getElementById('gh-token-status').textContent = 'Enter a token first'; return; }
+  localStorage.setItem('gh_pat', t);
+  document.getElementById('gh-token-input').value = '';
+  document.getElementById('gh-token-status').textContent = 'Token saved ✓';
+  ghFileSha = null; // Reset so next sync fetches fresh SHA
+  syncToGitHub();   // Trigger an immediate backup
+  setTimeout(() => document.getElementById('gh-token-status').textContent = '', 3000);
+}
+
+// On load, show whether token is set
+window.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('gh-token-status');
+  if (el) el.textContent = getGHToken() ? 'Token already saved ✓' : 'No token set';
+});
 
 function statusBadge(s) {
   const map = {
