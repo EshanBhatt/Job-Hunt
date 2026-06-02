@@ -536,8 +536,8 @@ function renderDashboard() {
   grid.innerHTML = `
     <div class="stat-cell"><div class="stat-label">Total Applied</div><div class="stat-val">${total}</div></div>
     <div class="stat-cell"><div class="stat-label">Ghosted</div><div class="stat-val c-red">${ghosted}</div><div class="stat-sub">${respondedTotal?Math.round(ghosted/respondedTotal*100):0}% of responses</div></div>
-    <div class="stat-cell"><div class="stat-label">Rejected</div><div class="stat-val c-amber">${rejected}</div></div>
-    <div class="stat-cell"><div class="stat-label">Interviews</div><div class="stat-val c-blue">${interviews}</div></div>
+    <div class="stat-cell"><div class="stat-label">Rejected</div><div class="stat-val c-amber">${rejected}</div><div class="stat-sub">${respondedTotal?Math.round(rejected/respondedTotal*100):0}% of responses</div></div>
+    <div class="stat-cell"><div class="stat-label">Interviews</div><div class="stat-val c-blue">${interviews}</div><div class="stat-sub">${respondedTotal?Math.round(interviews/respondedTotal*100):0}% of responses</div></div>
     <div class="stat-cell"><div class="stat-label">Avg Response</div><div class="stat-val">${avgResp || '—'}</div><div class="stat-sub">days</div></div>
     <div class="stat-cell"><div class="stat-label">Response Rate</div><div class="stat-val ${responseRate>30?'c-green':'c-amber'}">${responseRate}%</div></div>
   `;
