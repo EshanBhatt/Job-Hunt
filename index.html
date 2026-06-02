@@ -571,10 +571,11 @@ function renderDashboard() {
   document.getElementById('hero-title').textContent = accepted > 0 ? 'HIRED. 🎉' : interviews > 0 ? 'INTERVIEW.' : 'JOB HUNT.';
   document.getElementById('hero-sub').textContent = `${total} applications logged · last updated ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}`;
 
+  const respondedTotal = ghosted + rejected + interviews + accepted;
   const grid = document.getElementById('stat-grid');
   grid.innerHTML = `
     <div class="stat-cell"><div class="stat-label">Total Applied</div><div class="stat-val">${total}</div></div>
-    <div class="stat-cell"><div class="stat-label">Ghosted</div><div class="stat-val c-red">${ghosted}</div><div class="stat-sub">${total?Math.round(ghosted/total*100):0}% of apps</div></div>
+    <div class="stat-cell"><div class="stat-label">Ghosted</div><div class="stat-val c-red">${ghosted}</div><div class="stat-sub">${respondedTotal?Math.round(ghosted/respondedTotal*100):0}% of responded</div></div>
     <div class="stat-cell"><div class="stat-label">Rejected</div><div class="stat-val c-amber">${rejected}</div></div>
     <div class="stat-cell"><div class="stat-label">Interviews</div><div class="stat-val c-blue">${interviews}</div></div>
     <div class="stat-cell"><div class="stat-label">Avg Response</div><div class="stat-val">${avgResp || '—'}</div><div class="stat-sub">days</div></div>
@@ -677,10 +678,12 @@ function renderStats() {
   jobs.forEach(j=>{ if(resp[j.response]!==undefined) resp[j.response]++; });
   const responseTimes = jobs.filter(j=>j.respTime!=null).map(j=>j.respTime);
   const avgR = responseTimes.length ? (responseTimes.reduce((a,b)=>a+b,0)/responseTimes.length).toFixed(1) : '—';
+  const responded = resp.GHOSTED + resp.REJECTED + resp.INTERVIEW + resp.ACCEPTED;
+  const respondedBase = responded || 1;
 
   document.getElementById('response-grid').innerHTML = `
-    <div class="stat-cell"><div class="stat-label">Ghosted</div><div class="stat-val c-red">${resp.GHOSTED}</div><div class="stat-sub">${Math.round(resp.GHOSTED/total*100)}%</div></div>
-    <div class="stat-cell"><div class="stat-label">Rejected</div><div class="stat-val c-amber">${resp.REJECTED}</div><div class="stat-sub">${Math.round(resp.REJECTED/total*100)}%</div></div>
+    <div class="stat-cell"><div class="stat-label">Ghosted</div><div class="stat-val c-red">${resp.GHOSTED}</div><div class="stat-sub">${Math.round(resp.GHOSTED/respondedBase*100)}% of responded</div></div>
+    <div class="stat-cell"><div class="stat-label">Rejected</div><div class="stat-val c-amber">${resp.REJECTED}</div><div class="stat-sub">${Math.round(resp.REJECTED/respondedBase*100)}% of responded</div></div>
     <div class="stat-cell"><div class="stat-label">Interviews</div><div class="stat-val c-blue">${resp.INTERVIEW}</div></div>
     <div class="stat-cell"><div class="stat-label">Accepted</div><div class="stat-val c-green">${resp.ACCEPTED}</div></div>
     <div class="stat-cell"><div class="stat-label">Avg Response</div><div class="stat-val">${avgR}</div><div class="stat-sub">days to hear back</div></div>
