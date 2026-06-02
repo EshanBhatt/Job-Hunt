@@ -238,19 +238,15 @@ tr:hover td{background:var(--bg2)}
     </div>
   </div>
 
-  <div class="sec-head" style="margin-top:1rem">
-    <span class="sec-title">GitHub Backup</span>
-  </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:2rem">
-    <div class="form-group" style="margin-bottom:10px">
-      <label>Personal Access Token (stored in this browser only)</label>
-      <input type="password" id="gh-token-input" placeholder="ghp_..." style="font-family:'DM Mono',monospace">
-    </div>
-    <div style="display:flex;gap:10px;align-items:center">
-      <button class="btn" onclick="saveGHToken()">Save Token</button>
-      <span id="gh-token-status" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)"></span>
-    </div>
-    <p style="font-size:11px;color:var(--dim);margin-top:.75rem;font-family:'DM Mono',monospace;line-height:1.6">Token is saved locally and used to backup data.json to GitHub after every change. If you ever lose your localStorage, you can restore from the repo.</p>
+  <div style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+    <details>
+      <summary style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);cursor:pointer;list-style:none;user-select:none">// github backup token</summary>
+      <div style="margin-top:.75rem;display:flex;gap:8px;align-items:center">
+        <input type="password" id="gh-token-input" placeholder="ghp_..." style="font-family:'DM Mono',monospace;font-size:11px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--muted);padding:6px 10px;outline:none;flex:1;max-width:280px">
+        <button class="btn-ghost" onclick="saveGHToken()" style="font-size:11px;padding:6px 12px">save</button>
+        <span id="gh-token-status" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)"></span>
+      </div>
+    </details>
   </div>
 
   <div class="sec-head" style="margin-top:1rem">
