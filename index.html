@@ -165,38 +165,8 @@ tr:hover td{background:var(--bg2)}
   </div>
 
   <div class="stat-grid" id="stat-grid"></div>
-    <div class="bet-grid">
-      <div>
-        <div class="bet-row">
-          <span class="bet-name" style="color:var(--red)">Chrissy</span>
-          <span class="bet-pred">17 responses · job by Jan</span>
-        </div>
-        <div class="bet-row">
-          <span class="bet-name">Eshan</span>
-          <span class="bet-pred">4 responses · job by Feb</span>
-        </div>
-        <div class="bet-row">
-          <span class="bet-name">Suyash</span>
-          <span class="bet-pred">job by Feb</span>
-        </div>
-      </div>
-      <div>
-        <div class="bet-row">
-          <span class="bet-name">Rohan</span>
-          <span class="bet-pred">job in 4+ months</span>
-        </div>
-        <div class="bet-row">
-          <span class="bet-name">Rishi</span>
-          <span class="bet-pred">job by March</span>
-        </div>
-        <div class="bet-row" id="bet-status-row">
-          <span class="bet-name c-amber" id="bet-result">Still hunting 👀</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="sec-head">
+<div class="sec-head">
     <span class="sec-title">Recent Applications</span>
     <button class="sec-action" onclick="showTab('log')">+ Add →</button>
   </div>
@@ -724,11 +694,27 @@ function renderStats() {
   }).join('');
 }
 
+const STATE_NAMES = {
+  'AL':'Alabama','AK':'Alaska','AZ':'Arizona','AR':'Arkansas','CA':'California',
+  'CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida','GA':'Georgia',
+  'HI':'Hawaii','ID':'Idaho','IL':'Illinois','IN':'Indiana','IA':'Iowa','KS':'Kansas',
+  'KY':'Kentucky','LA':'Louisiana','ME':'Maine','MD':'Maryland','MA':'Massachusetts',
+  'MI':'Michigan','MN':'Minnesota','MS':'Mississippi','MO':'Missouri','MT':'Montana',
+  'NE':'Nebraska','NV':'Nevada','NH':'New Hampshire','NJ':'New Jersey','NM':'New Mexico',
+  'NY':'New York','NC':'North Carolina','ND':'North Dakota','OH':'Ohio','OK':'Oklahoma',
+  'OR':'Oregon','PA':'Pennsylvania','RI':'Rhode Island','SC':'South Carolina',
+  'SD':'South Dakota','TN':'Tennessee','TX':'Texas','UT':'Utah','VT':'Vermont',
+  'VA':'Virginia','WA':'Washington','WV':'West Virginia','WI':'Wisconsin','WY':'Wyoming'
+};
+
 function extractState(location) {
   if(!location) return null;
   if(location.toLowerCase()==='remote') return 'Remote';
   const parts = location.split(',');
-  if(parts.length>=2) return parts[parts.length-1].trim().split(' ')[0];
+  if(parts.length>=2) {
+    const abbr = parts[parts.length-1].trim().split(' ')[0].toUpperCase();
+    return STATE_NAMES[abbr] || abbr;
+  }
   return null;
 }
 
